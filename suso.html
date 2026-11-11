@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#103858">
+  <title>수소취성이란? — 그림으로 보는 도금 교육</title>
+  <style>
+    :root {
+      --navy: #103858; --blue: #17668f; --sky: #eaf4ff; --ink: #172b3b; --muted: #596f82;
+      --line: #c7dced; --paper: #fff; --gold: #f0ad24; --red: #d6453d; --h: #2f8fe0;
+      --shadow: 0 10px 28px rgb(20 61 91 / 9%);
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: #f4f8fc; line-height: 1.55; }
+    .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    .back { display: inline-block; margin: 14px 0 0; color: var(--blue); font-size: .85rem; font-weight: 800; text-decoration: none; }
+
+    /* 배너 */
+    .banner { display: flex; align-items: center; gap: 22px; margin: 12px 0 18px; padding: 20px 26px; border-radius: 22px; color: #fff; background: linear-gradient(118deg, #102d49, #155279 75%, #236e96); box-shadow: var(--shadow); }
+    .banner svg { flex: 0 0 120px; width: 120px; height: 120px; }
+    .banner h1 { margin: 0 0 10px; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.04em; line-height: 1.1; }
+    .banner .def { margin: 0; padding: 13px 18px; border-radius: 14px; background: #fff; color: var(--ink); font-size: clamp(.95rem, 1.8vw, 1.15rem); font-weight: 700; }
+    .banner .def em { color: var(--red); font-style: normal; }
+
+    /* 공통 박스 */
+    .box { margin-bottom: 18px; padding: 18px 20px 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--paper); box-shadow: var(--shadow); }
+    .tag { display: inline-block; margin: 0 0 14px; padding: 6px 18px; border-radius: 10px; background: var(--navy); color: #fff; font-size: 1.05rem; font-weight: 900; }
+    .tag.red { background: var(--red); } .tag.gold { background: #c98a10; } .tag.green { background: #2b8a5a; }
+    .grid { display: grid; gap: 14px; }
+    .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); } .g5 { grid-template-columns: repeat(5, 1fr); } .g2 { grid-template-columns: 1.1fr 1fr; }
+    .card { position: relative; padding: 12px; border: 1px solid #d6e5f0; border-radius: 16px; background: #f9fcff; }
+    .card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--navy); }
+    .card h3 .no { display: inline-grid; place-items: center; width: 28px; height: 28px; margin-right: 6px; border-radius: 50%; background: var(--blue); color: #fff; font-size: .9rem; }
+    .card p { margin: 8px 2px 0; font-size: .92rem; color: #3b5163; }
+    .card svg { display: block; width: 100%; height: auto; border-radius: 12px; }
+    .arrow-between { position: absolute; top: 45%; right: -17px; z-index: 2; width: 20px; color: var(--blue); font-size: 1.5rem; font-weight: 900; }
+    .small { font-size: .82rem; color: var(--muted); }
+
+    /* 목록 */
+    .checks { margin: 0; padding: 0; list-style: none; }
+    .checks li { display: flex; gap: 10px; padding: 10px 4px; border-bottom: 1px dashed #d6e5f0; font-size: .96rem; }
+    .checks li:last-child { border: 0; }
+    .checks b { color: var(--navy); } .checks small { display: block; color: var(--muted); font-size: .82rem; }
+    .chk { flex: 0 0 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: #e1f3e9; color: #1f8a55; font-weight: 900; font-size: .85rem; }
+    .chk.warn { background: #fde7e5; color: var(--red); }
+    .chk.blue { background: #e1effb; color: var(--blue); }
+
+    .note { margin-top: 14px; padding: 12px 16px; border-left: 5px solid var(--gold); border-radius: 0 12px 12px 0; background: #fff7e1; font-size: .92rem; }
+    .note.red { border-color: var(--red); background: #fff0ee; }
+
+    /* 플로우 */
+    .flow .card { text-align: center; padding-bottom: 14px; }
+    .flow .card p { text-align: left; }
+    .badge { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 20px; font-size: .78rem; font-weight: 800; }
+    .badge.hi { background: #fde7e5; color: var(--red); } .badge.ok { background: #e1f3e9; color: #1f8a55; }
+
+    .timeline { display: flex; align-items: stretch; gap: 8px; margin-top: 12px; }
+    .timeline div { flex: 1; padding: 10px; border-radius: 12px; background: #eef5fb; font-size: .85rem; text-align: center; }
+    .timeline div b { display: block; color: var(--navy); }
+    .timeline div.bad { background: #fde7e5; } .timeline div.bad b { color: var(--red); }
+    .timeline span { align-self: center; color: var(--blue); font-weight: 900; }
+
+    .summary { margin: 4px 0 30px; padding: 20px 24px; border-radius: 20px; color: #fff; background: linear-gradient(118deg, #102d49, #155279); }
+    .summary h2 { margin: 0 0 8px; color: #ffd36a; font-size: 1.1rem; }
+    .summary p { margin: 0; font-size: 1.05rem; font-weight: 700; }
+    footer { padding: 0 0 28px; color: #6f8090; font-size: .8rem; text-align: center; }
+
+    @media (max-width: 900px) {
+      .g4, .g5 { grid-template-columns: repeat(2, 1fr); }
+      .g3 { grid-template-columns: 1fr; } .g2 { grid-template-columns: 1fr; }
+      .arrow-between { display: none; }
+    }
+    @media (max-width: 560px) {
+      .banner { flex-direction: column; text-align: center; padding: 18px; }
+      .g4, .g5 { grid-template-columns: 1fr; }
+      .timeline { flex-direction: column; } .timeline span { transform: rotate(90deg); }
+    }
+    @media print { body { background: #fff; } .box, .banner, .summary { box-shadow: none; break-inside: avoid; } .back { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- 공통 그림 부품 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e9aa6"/><stop offset="1" stop-color="#5f6c78"/></linearGradient>
+    <linearGradient id="pipe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3e9ee"/><stop offset=".5" stop-color="#9fb0bd"/><stop offset="1" stop-color="#6d7f8d"/></linearGradient>
+    <pattern id="lattice" width="28" height="24" patternUnits="userSpaceOnUse"><circle cx="14" cy="12" r="8.5" fill="#d3dae0" stroke="#7e8b97" stroke-width="1.2"/></pattern>
+    <radialGradient id="glow"><stop offset="0" stop-color="#ff3b30" stop-opacity=".75"/><stop offset="1" stop-color="#ff3b30" stop-opacity="0"/></radialGradient>
+    <marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fe0"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d6453d"/></marker>
+    <marker id="arrK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#3b5163"/></marker>
+    <symbol id="hatom" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9.5" fill="#2f8fe0" stroke="#1a5fa3"/><text x="10" y="14.5" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">H</text></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <a class="back" href="index.html">← 도금 그림백과로</a>
+
+  <header class="banner">
+    <svg viewBox="0 0 120 120" role="img" aria-label="갈라진 금속 파이프">
+      <circle cx="60" cy="60" r="52" fill="url(#pipe)"/>
+      <circle cx="60" cy="60" r="32" fill="#3d4a55"/><circle cx="60" cy="60" r="32" fill="none" stroke="#1d262e" stroke-width="3"/>
+      <polyline points="108,28 84,40 96,52 74,62 86,76" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+      <polyline points="108,28 84,40 96,52 74,62 86,76" fill="none" stroke="#d6453d" stroke-width="1.8" stroke-linejoin="round"/>
+      <g stroke="#f0ad24" stroke-width="3.5" stroke-linecap="round"><line x1="98" y1="8" x2="92" y2="20"/><line x1="112" y1="16" x2="102" y2="24"/><line x1="116" y1="34" x2="104" y2="36"/></g>
+    </svg>
+    <div>
+      <h1>수소취성이란?</h1>
+      <p class="def">금속에 스며든 <em>수소</em>가 재료를 약하게 만들어, 평소보다 <em>낮은 힘</em>에서도 갑자기 갈라지고 부서지는(취성 파괴) 현상</p>
+    </div>
+  </header>
+
+  <!-- 1. 발생 과정 -->
+  <section class="box" aria-labelledby="s1">
+    <h2 class="tag" id="s1">발생 과정</h2>
+    <div class="grid g3">
+      <div class="card">
+        <h3><span class="no">1</span>수소 유입</h3>
+        <svg viewBox="0 0 300 190" role="img" aria-label="수소 원자가 금속 표면에서 안쪽으로 확산">
+          <rect width="300" height="190" fill="#eef5fb"/>
+          <rect x="14" y="98" width="272" height="78" rx="8" fill="url(#metal)"/>
+          <rect x="14" y="98" width="272" height="78" rx="8" fill="url(#lattice)"/>
+          <text x="270" y="190" text-anchor="end" font-size="12" font-weight="800" fill="#fff" stroke="#3d4a55" stroke-width="3" paint-order="stroke" dy="-8">금속</text>
+          <use href="#hatom" x="48" y="14" width="24" height="24"/><use href="#hatom" x="138" y="8" width="24" height="24"/><use href="#hatom" x="228" y="20" width="24" height="24"/>
+          <line x1="60" y1="42" x2="60" y2="94" stroke="#2f8fe0" stroke-width="2.5" marker-end="url(#arrB)"/>
+          <line x1="150" y1="36" x2="150" y2="94" stroke="#2f8fe0" stroke-width="2.5" marker-end="url(#arrB)"/>
+          <line x1="240" y1="48" x2="240" y2="94" stroke="#2f8fe0" stroke-width="2.5" marker-end="url(#arrB)"/>
+          <use href="#hatom" x="48" y="112" width="22" height="22"/><use href="#hatom" x="140" y="128" width="22" height="22"/>
+          <line x1="60" y1="136" x2="72" y2="156" stroke="#fff" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrB)"/>
+          <text x="10" y="62" font-size="11" font-weight="700" fill="#17668f">수소(H) 원자는 아주 작아서</text>
+        </svg>
+        <p>수소 원자(H)가 금속 <b>표면에서 흡수</b>되어 안쪽으로 퍼져 들어가요.</p>
+      </div>
+      <div class="card">
+        <span class="arrow-between" aria-hidden="true">▶</span>
+        <h3><span class="no">2</span>약화</h3>
+        <svg viewBox="0 0 300 190" role="img" aria-label="수소가 격자를 일그러뜨리고 결합을 약하게 하며 기포를 만듦">
+          <rect width="300" height="190" fill="#eef5fb"/>
+          <rect x="14" y="98" width="272" height="78" rx="8" fill="url(#metal)"/>
+          <rect x="14" y="98" width="272" height="78" rx="8" fill="url(#lattice)"/>
+          <circle cx="100" cy="132" r="36" fill="url(#glow)"/><circle cx="190" cy="142" r="30" fill="url(#glow)"/>
+          <polyline points="140,118 148,128 140,136 150,146" fill="none" stroke="#d6453d" stroke-width="3" stroke-linejoin="round"/>
+          <use href="#hatom" x="88" y="120" width="22" height="22"/><use href="#hatom" x="128" y="140" width="20" height="20"/><use href="#hatom" x="176" y="114" width="20" height="20"/>
+          <circle cx="214" cy="146" r="16" fill="#fff" stroke="#2f8fe0" stroke-width="2" stroke-dasharray="4 3"/><text x="214" y="151" text-anchor="middle" font-size="12" font-weight="800" fill="#1a5fa3">H₂</text>
+          <g font-size="11.5" font-weight="800" text-anchor="middle">
+            <rect x="8" y="12" width="76" height="24" rx="12" fill="#fff" stroke="#d6453d"/><text x="46" y="28" fill="#d6453d">격자 왜곡</text>
+            <rect x="108" y="12" width="76" height="24" rx="12" fill="#fff" stroke="#d6453d"/><text x="146" y="28" fill="#d6453d">결합 약화</text>
+            <rect x="196" y="12" width="98" height="24" rx="12" fill="#fff" stroke="#2f8fe0"/><text x="245" y="28" fill="#1a5fa3">수소 기포(공동)</text>
+          </g>
+          <line x1="50" y1="36" x2="92" y2="118" stroke="#d6453d" stroke-width="1.5" marker-end="url(#arrR)"/>
+          <line x1="146" y1="36" x2="146" y2="114" stroke="#d6453d" stroke-width="1.5" marker-end="url(#arrR)"/>
+          <line x1="246" y1="36" x2="218" y2="128" stroke="#2f8fe0" stroke-width="1.5" marker-end="url(#arrB)"/>
+        </svg>
+        <p>금속 알갱이의 <b>배열이 일그러지고</b>, 서로 붙잡는 힘이 약해지고, 안쪽에 <b>수소 기포</b>가 생겨요.</p>
+      </div>
+      <div class="card">
+        <span class="arrow-between" aria-hidden="true">▶</span>
+        <h3><span class="no">3</span>균열·파괴</h3>
+        <svg viewBox="0 0 300 190" role="img" aria-label="작은 힘에도 균열이 자라 갑자기 부서짐">
+          <rect width="300" height="190" fill="#eef5fb"/>
+          <polygon points="30,98 148,98 138,116 152,134 138,152 148,178 30,178" fill="url(#metal)"/>
+          <polygon points="158,98 270,98 270,178 158,178 148,152 162,134 148,116" fill="url(#metal)"/>
+          <polygon points="30,98 148,98 138,116 152,134 138,152 148,178 30,178" fill="url(#lattice)" opacity=".7"/>
+          <polygon points="158,98 270,98 270,178 158,178 148,152 162,134 148,116" fill="url(#lattice)" opacity=".7"/>
+          <g stroke="#d6453d" stroke-width="3" stroke-linecap="round"><line x1="153" y1="84" x2="153" y2="70"/><line x1="140" y1="88" x2="132" y2="76"/><line x1="166" y1="88" x2="174" y2="76"/><line x1="124" y1="130" x2="112" y2="130" opacity="0"/></g>
+          <line x1="118" y1="62" x2="50" y2="62" stroke="#d6453d" stroke-width="5" marker-end="url(#arrR)"/>
+          <line x1="188" y1="62" x2="256" y2="62" stroke="#d6453d" stroke-width="5" marker-end="url(#arrR)"/>
+          <text x="150" y="30" text-anchor="middle" font-size="12.5" font-weight="800" fill="#d6453d">작은 하중(응력)만 걸려도!</text>
+          <text x="150" y="48" text-anchor="middle" font-size="11" fill="#596f82">평소엔 버티던 힘</text>
+        </svg>
+        <p>작은 힘에도 <b>균열이 자라서</b>, 늘어나는 모습 없이 <b>갑자기 부서져요</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 도금 현장 -->
+  <section class="box" aria-labelledby="s2">
+    <h2 class="tag gold" id="s2">도금 공정에서 수소는 어디서 들어올까?</h2>
+    <div class="grid g4 flow">
+      <div class="card">
+        <h3><span class="no">1</span>산세</h3>
+        <svg viewBox="0 0 160 120" role="img" aria-label="산세 탱크">
+          <rect width="160" height="120" fill="#f3f8fd"/>
+          <rect x="22" y="38" width="116" height="70" rx="5" fill="#fff" stroke="#5a86a8" stroke-width="3"/>
+          <rect x="25" y="56" width="110" height="49" fill="#fbe7a1"/>
+          <rect x="68" y="30" width="24" height="50" rx="3" fill="#7c8a96"/>
+          <g fill="#2f8fe0" stroke="#1a5fa3"><circle cx="50" cy="90" r="5"/><circle cx="108" cy="82" r="6"/><circle cx="60" cy="70" r="4"/><circle cx="118" cy="98" r="4"/></g>
+          <text x="80" y="22" text-anchor="middle" font-size="11" font-weight="800" fill="#17668f">H ↑ 기포</text>
+        </svg>
+        <p>산이 녹을 녹이는 동안 <b>수소 기포</b>가 생기고 일부가 금속에 흡수돼요.</p>
+        <span class="badge hi">시간이 길수록 위험↑</span>
+      </div>
+      <div class="card">
+        <h3><span class="no">2</span>음극 전해탈지</h3>
+        <svg viewBox="0 0 160 120" role="img" aria-label="전해탈지 탱크">
+          <rect width="160" height="120" fill="#f3f8fd"/>
+          <rect x="22" y="38" width="116" height="70" rx="5" fill="#fff" stroke="#5a86a8" stroke-width="3"/>
+          <rect x="25" y="56" width="110" height="49" fill="#cfe8f6"/>
+          <rect x="34" y="40" width="8" height="58" fill="#8a97a3"/><rect x="118" y="40" width="8" height="58" fill="#8a97a3"/>
+          <text x="38" y="34" text-anchor="middle" font-size="12" font-weight="900" fill="#d6453d">+</text><text x="122" y="34" text-anchor="middle" font-size="12" font-weight="900" fill="#17668f">−</text>
+          <rect x="70" y="60" width="26" height="30" rx="3" fill="#b8c3cd" stroke="#6d7f8d"/>
+          <g fill="#2f8fe0" stroke="#1a5fa3"><circle cx="104" cy="72" r="4"/><circle cx="108" cy="90" r="5"/><circle cx="112" cy="62" r="3.5"/></g>
+          <text x="80" y="22" text-anchor="middle" font-size="11" font-weight="800" fill="#17668f">부품이 음극(−)</text>
+        </svg>
+        <p>부품이 <b>음극</b>이 되면 물이 분해되어 부품 표면에서 수소가 생겨요.</p>
+        <span class="badge hi">고강도 부품은 양극 탈지 검토</span>
+      </div>
+      <div class="card">
+        <h3><span class="no">3</span>전기도금</h3>
+        <svg viewBox="0 0 160 120" role="img" aria-label="도금 탱크">
+          <rect width="160" height="120" fill="#f3f8fd"/>
+          <rect x="22" y="38" width="116" height="70" rx="5" fill="#fff" stroke="#5a86a8" stroke-width="3"/>
+          <rect x="25" y="56" width="110" height="49" fill="#d9ecf7"/>
+          <rect x="34" y="40" width="8" height="58" fill="#c9a227"/><rect x="118" y="40" width="8" height="58" fill="#8a97a3"/>
+          <rect x="72" y="60" width="26" height="30" rx="3" fill="#e9c24a" stroke="#a8841a"/>
+          <g fill="#2f8fe0" stroke="#1a5fa3"><circle cx="106" cy="76" r="4"/><circle cx="110" cy="92" r="4.5"/></g>
+          <text x="80" y="22" text-anchor="middle" font-size="11" font-weight="800" fill="#17668f">금속 + 수소 동시 발생</text>
+        </svg>
+        <p>금속이 입혀지는 중에도 <b>수소가 함께</b> 생기고, 도금층 아래에 갇혀요.</p>
+        <span class="badge hi">전류효율 낮은 욕일수록 수소↑</span>
+      </div>
+      <div class="card">
+        <h3><span class="no">4</span>베이킹</h3>
+        <svg viewBox="0 0 160 120" role="img" aria-label="오븐에서 수소가 빠져나감">
+          <rect width="160" height="120" fill="#f3f8fd"/>
+          <rect x="24" y="30" width="112" height="80" rx="8" fill="#e8a24a" stroke="#a8641a" stroke-width="3"/>
+          <rect x="38" y="46" width="84" height="52" rx="4" fill="#fff3d6" stroke="#a8641a"/>
+          <rect x="62" y="68" width="36" height="20" rx="3" fill="#b8c3cd" stroke="#6d7f8d"/>
+          <g stroke="#2f8fe0" stroke-width="2.5" fill="none" stroke-linecap="round"><path d="M70 62 Q66 52 72 44" marker-end="url(#arrB)"/><path d="M92 62 Q96 52 90 44" marker-end="url(#arrB)"/></g>
+          <use href="#hatom" x="64" y="12" width="20" height="20"/><use href="#hatom" x="90" y="8" width="20" height="20"/>
+          <text x="80" y="108" text-anchor="middle" font-size="10.5" font-weight="800" fill="#7a4310">열로 수소 내보내기</text>
+        </svg>
+        <p>가열해서 갇힌 <b>수소를 밖으로</b> 빼내요. 이게 가장 중요한 방어선이에요.</p>
+        <span class="badge ok">도금 직후, 지체 없이</span>
+      </div>
+    </div>
+    <div class="note red"><b>도금은 양날의 검이에요.</b> 도금층은 외부 수소를 막는 보호막이 되기도 하지만, 도금하는 <b>그 과정 자체가 수소의 입구</b>가 되기도 해요. 그래서 고강도 부품은 “도금 → 베이킹”이 한 세트예요.</div>
+  </section>
+
+  <!-- 3. 3요소 + 영향 -->
+  <div class="grid g2">
+    <section class="box" aria-labelledby="s3">
+      <h2 class="tag red" id="s3">언제 위험할까? — 세 가지가 겹칠 때</h2>
+      <svg viewBox="0 0 300 250" style="display:block;width:100%;max-width:380px;margin:0 auto" role="img" aria-label="수소, 고강도 소재, 인장응력 세 요소가 겹치면 취성 파괴">
+        <circle cx="108" cy="92" r="72" fill="#2f8fe0" fill-opacity=".30" stroke="#2f8fe0" stroke-width="2"/>
+        <circle cx="192" cy="92" r="72" fill="#7b8794" fill-opacity=".35" stroke="#5f6c78" stroke-width="2"/>
+        <circle cx="150" cy="162" r="72" fill="#f0ad24" fill-opacity=".35" stroke="#c98a10" stroke-width="2"/>
+        <g text-anchor="middle" font-weight="800">
+          <text x="76" y="72" font-size="14" fill="#1a5fa3">수소</text><text x="76" y="88" font-size="10" font-weight="600" fill="#1a5fa3">(도금·산세)</text>
+          <text x="226" y="72" font-size="14" fill="#3d4a55">고강도</text><text x="226" y="88" font-size="10" font-weight="600" fill="#3d4a55">소재</text>
+          <text x="150" y="212" font-size="14" fill="#8a5a05">인장 응력</text><text x="150" y="228" font-size="10" font-weight="600" fill="#8a5a05">(조임·하중)</text>
+          <text x="150" y="124" font-size="13" fill="#d6453d">취성</text><text x="150" y="140" font-size="13" fill="#d6453d">파괴</text>
+        </g>
+      </svg>
+      <p class="small" style="text-align:center;margin:6px 0 0">셋 중 <b>하나만 없어도</b> 위험이 크게 줄어요 → 그래서 수소를 빼는 베이킹이 효과적이에요.</p>
+    </section>
+
+    <section class="box" aria-labelledby="s4">
+      <h2 class="tag" id="s4">주요 영향</h2>
+      <ul class="checks">
+        <li><span class="chk warn">✔</span><span><b>강도·연성 감소</b><small>더 쉽게 부러짐</small></span></li>
+        <li><span class="chk warn">✔</span><span><b>피로수명 단축</b><small>반복 하중에 더 약함</small></span></li>
+        <li><span class="chk warn">✔</span><span><b>갑작스러운 취성 파괴</b><small>큰 변형 없이 툭 끊어짐</small></span></li>
+        <li><span class="chk warn">✔</span><span><b>지연파괴 — 나중에 터짐</b><small>조립·체결 후 몇 시간~며칠 뒤에 부러지기도 함</small></span></li>
+      </ul>
+      <div class="timeline" aria-label="지연파괴 흐름">
+        <div><b>도금</b>수소 갇힘</div><span>→</span>
+        <div><b>볼트 체결</b>응력 걸림</div><span>→</span>
+        <div class="bad"><b>몇 시간~며칠 후</b>💥 뚝!</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 4. 취약 조건 + 예시 -->
+  <section class="box" aria-labelledby="s5">
+    <h2 class="tag" id="s5">현장·생활 속 예시</h2>
+    <div class="grid g5">
+      <div class="card"><svg viewBox="0 0 120 90" role="img" aria-label="고강도 볼트"><rect width="120" height="90" fill="#eef5fb"/><rect x="14" y="24" width="24" height="42" rx="3" fill="url(#pipe)" stroke="#6d7f8d"/><rect x="38" y="33" width="68" height="24" fill="url(#pipe)" stroke="#6d7f8d"/><g stroke="#5f6c78" stroke-width="2"><line x1="54" y1="33" x2="54" y2="57"/><line x1="64" y1="33" x2="64" y2="57"/><line x1="74" y1="33" x2="74" y2="57"/><line x1="84" y1="33" x2="84" y2="57"/><line x1="94" y1="33" x2="94" y2="57"/></g></svg><p><b>고강도 볼트·너트</b><br><span class="small">도금 후 가장 흔한 사례</span></p></div>
+      <div class="card"><svg viewBox="0 0 120 90" role="img" aria-label="스프링과 클립"><rect width="120" height="90" fill="#eef5fb"/><polyline points="14,64 28,26 40,64 52,26 64,64 76,26 88,64 100,26 108,45" fill="none" stroke="#5f6c78" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polyline points="14,64 28,26 40,64 52,26 64,64 76,26 88,64 100,26 108,45" fill="none" stroke="#c9d3dc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg><p><b>스프링·클립·와셔</b><br><span class="small">열처리로 단단한 부품</span></p></div>
+      <div class="card"><svg viewBox="0 0 120 90" role="img" aria-label="수소 저장 용기"><rect width="120" height="90" fill="#eef5fb"/><rect x="14" y="22" width="92" height="50" rx="25" fill="#fff" stroke="#5a86a8" stroke-width="3"/><rect x="52" y="12" width="16" height="10" fill="#7c8a96"/><text x="60" y="55" text-anchor="middle" font-size="20" font-weight="900" fill="#2f8fe0">H₂</text></svg><p><b>수소 저장·운송 용기</b><br><span class="small">수소가 닿는 환경</span></p></div>
+      <div class="card"><svg viewBox="0 0 120 90" role="img" aria-label="수소 배관"><rect width="120" height="90" fill="#eef5fb"/><rect x="8" y="30" width="104" height="30" fill="url(#pipe)" stroke="#6d7f8d"/><rect x="4" y="24" width="10" height="42" rx="2" fill="#7c8a96"/><rect x="106" y="24" width="10" height="42" rx="2" fill="#7c8a96"/><rect x="56" y="30" width="8" height="30" fill="#7c8a96"/></svg><p><b>수소 배관</b><br><span class="small">충전 인프라 등</span></p></div>
+      <div class="card"><svg viewBox="0 0 120 90" role="img" aria-label="해상풍력 구조물"><rect width="120" height="90" fill="#eef5fb"/><rect y="68" width="120" height="22" fill="#a9d3ee"/><polygon points="57,70 63,70 61,32 59,32" fill="#8a97a3"/><circle cx="60" cy="30" r="4" fill="#5f6c78"/><g stroke="#6d7f8d" stroke-width="4" stroke-linecap="round"><line x1="60" y1="30" x2="60" y2="6"/><line x1="60" y1="30" x2="81" y2="42"/><line x1="60" y1="30" x2="39" y2="42"/></g></svg><p><b>해상풍력 구조물</b><br><span class="small">부식 + 수소 복합 환경</span></p></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div>
+        <h3 style="margin:6px 0;color:var(--navy)">취약한 환경·조건</h3>
+        <ul class="checks">
+          <li><span class="chk blue">H₂</span><span><b>수소가 많은 환경</b><small>수소가스, 산세, 전해탈지, 전기도금</small></span></li>
+          <li><span class="chk blue">💧</span><span><b>부식·전기화학 반응</b><small>산성 환경, 음극 보호</small></span></li>
+          <li><span class="chk blue">⚙</span><span><b>고강도 금속</b><small>대략 인장강도 1000 MPa(경도 약 320 HV) 이상 고강도강, 티타늄 합금 등에서 특히 민감</small></span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin:6px 0;color:var(--navy)">베이킹하면 수소가 어떻게 되나?</h3>
+        <svg viewBox="0 0 360 200" role="img" aria-label="베이킹 시간에 따라 금속 속 수소량이 줄어드는 그래프" style="width:100%;height:auto;background:#f9fcff;border:1px solid #d6e5f0;border-radius:12px">
+          <line x1="40" y1="20" x2="40" y2="170" stroke="#3b5163" stroke-width="2" marker-end="url(#arrK)"/>
+          <line x1="40" y1="170" x2="345" y2="170" stroke="#3b5163" stroke-width="2" marker-end="url(#arrK)"/>
+          <text x="12" y="16" font-size="11" font-weight="700" fill="#3b5163">금속 속 수소량</text>
+          <text x="345" y="186" text-anchor="end" font-size="11" font-weight="700" fill="#3b5163">시간 →</text>
+          <rect x="170" y="22" width="150" height="148" fill="#f8c98a" opacity=".45"/>
+          <text x="245" y="38" text-anchor="middle" font-size="11.5" font-weight="800" fill="#8a4a0a">🔥 베이킹 구간</text>
+          <path d="M40 160 C60 120, 80 60, 100 52 L170 52" fill="none" stroke="#d6453d" stroke-width="3.5"/>
+          <path d="M170 52 C210 58, 235 110, 262 138 S308 156, 318 158" fill="none" stroke="#1f8a55" stroke-width="3.5"/>
+          <circle cx="170" cy="52" r="5" fill="#d6453d"/><circle cx="318" cy="158" r="5" fill="#1f8a55"/>
+          <g font-size="10.5" font-weight="800"><text x="48" y="44" fill="#d6453d">도금하는 동안 ↑</text><text x="92" y="76" fill="#d6453d">갇힘(위험)</text><text x="240" y="158" fill="#1f8a55">↓ 줄어듦</text></g>
+          <text x="105" y="190" text-anchor="middle" font-size="10" fill="#d6453d" font-weight="700">베이킹 전 대기 시간이 길면 위험</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 대응 방안 -->
+  <section class="box" aria-labelledby="s6">
+    <h2 class="tag green" id="s6">대응 방안</h2>
+    <div class="grid g4">
+      <div class="card"><svg viewBox="0 0 160 110" role="img" aria-label="수소 유입 줄이기"><rect width="160" height="110" fill="#e9f6ee"/><rect x="30" y="52" width="100" height="40" rx="6" fill="url(#metal)"/><use href="#hatom" x="30" y="10" width="22" height="22"/><use href="#hatom" x="70" y="6" width="22" height="22"/><use href="#hatom" x="110" y="12" width="22" height="22"/><path d="M26 44 H134" stroke="#2b8a5a" stroke-width="6" stroke-linecap="round"/><g stroke="#d6453d" stroke-width="3" stroke-linecap="round"><line x1="34" y1="36" x2="44" y2="26" opacity="0"/></g><text x="80" y="76" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">방어막</text></svg><h3 style="margin-top:10px">① 수소 침투 줄이기</h3><p>산세 시간 짧게·인히비터 사용, 저수소 도금 공정, 전류밀도·욕 관리</p></div>
+      <div class="card"><svg viewBox="0 0 160 110" role="img" aria-label="소재 선택"><rect width="160" height="110" fill="#e9f6ee"/><rect x="22" y="30" width="46" height="56" rx="6" fill="#c9d3dc" stroke="#6d7f8d"/><rect x="92" y="30" width="46" height="56" rx="6" fill="#7b8794" stroke="#3d4a55"/><text x="45" y="62" text-anchor="middle" font-size="11" font-weight="800" fill="#3b5163">낮은</text><text x="45" y="76" text-anchor="middle" font-size="11" font-weight="800" fill="#3b5163">강도</text><text x="115" y="62" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">고강도</text><text x="115" y="76" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">주의!</text><text x="80" y="62" text-anchor="middle" font-size="18" font-weight="900" fill="#2b8a5a">→</text></svg><h3 style="margin-top:10px">② 소재·강도 선정</h3><p>가능하면 강도를 필요한 만큼만, 수소에 강한 소재(내수소취성 합금 등) 검토</p></div>
+      <div class="card"><svg viewBox="0 0 160 110" role="img" aria-label="도금 후 베이킹"><rect width="160" height="110" fill="#e9f6ee"/><rect x="28" y="22" width="104" height="70" rx="8" fill="#e8a24a" stroke="#a8641a" stroke-width="3"/><rect x="40" y="36" width="80" height="42" rx="4" fill="#fff3d6" stroke="#a8641a"/><rect x="62" y="54" width="36" height="18" rx="3" fill="#b8c3cd" stroke="#6d7f8d"/><use href="#hatom" x="60" y="2" width="16" height="16"/><use href="#hatom" x="86" y="0" width="16" height="16"/><text x="80" y="104" text-anchor="middle" font-size="10.5" font-weight="800" fill="#2b6a46">도금 후 바로 → 수소 제거</text></svg><h3 style="margin-top:10px">③ 적절한 열처리</h3><p>도금 직후 베이킹(탈수소). 예: 약 190~220℃ 수 시간↑ — 시간·온도는 <b>규격·소재별</b>로 확인</p></div>
+      <div class="card"><svg viewBox="0 0 160 110" role="img" aria-label="조임 관리"><rect width="160" height="110" fill="#e9f6ee"/><rect x="30" y="64" width="100" height="14" fill="url(#pipe)" stroke="#6d7f8d"/><rect x="62" y="30" width="36" height="34" rx="3" fill="url(#pipe)" stroke="#6d7f8d"/><rect x="72" y="78" width="16" height="22" fill="url(#pipe)" stroke="#6d7f8d"/><path d="M112 48 A22 22 0 1 0 112 20" fill="none" stroke="#2b8a5a" stroke-width="3.5" marker-end="url(#arrB)" opacity="0"/><text x="80" y="20" text-anchor="middle" font-size="11" font-weight="800" fill="#2b6a46">토크 적정 ✔</text><text x="80" y="108" text-anchor="middle" font-size="10" font-weight="700" fill="#d6453d">과도한 조임 ✘</text></svg><h3 style="margin-top:10px">④ 운용·관리</h3><p>과도한 조임 토크·응력 피하기, 부식 억제, 시험으로 확인(지속하중 시험 등)</p></div>
+    </div>
+    <div class="note"><b>베이킹 순서 팁 —</b> 일반적으로 수소가 빠져나가기 쉽도록 <b>크로메이트 등 후처리 전에</b> 베이킹하는 것이 원칙이에요. 대기 시간과 조건은 고객 규격(예: ISO 4042, ASTM B850 등)을 꼭 확인하세요.</div>
+  </section>
+
+  <section class="summary">
+    <h2>한 줄 정리</h2>
+    <p>수소 + 고강도 소재 + 응력이 만나면 “뚝!” — 도금 현장에서는 <b style="color:#ffd36a">수소를 적게 넣고, 도금 직후 베이킹으로 빼내는 것</b>이 핵심이에요.</p>
+  </section>
+  <footer>교육용 요약 자료입니다. 실제 베이킹 온도·시간, 대기 시간, 시험 기준은 소재, 강도 등급, 적용 규격과 고객 요구에 따라 달라집니다.</footer>
+</div>
+</body>
+</html>
