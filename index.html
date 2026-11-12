@@ -17,6 +17,14 @@
     .toolbar a, .toolbar button { color:#fff; font:inherit; font-size:.85rem; font-weight:800; text-decoration:none; background:rgb(255 255 255/14%); border:0; border-radius:9px; padding:7px 12px; cursor:pointer; }
     .toolbar input { flex:1; max-width:320px; min-height:34px; padding:0 12px; border:0; border-radius:9px; font:inherit; font-size:.88rem; }
     .toolbar .count { margin-left:auto; font-size:.8rem; color:#bce6ff; white-space:nowrap; }
+    .toolbar { flex-wrap:wrap; }
+    .toolbar .held { background:var(--gold); color:var(--navy); }
+    .toolbar select { max-width:190px; min-height:34px; border:0; border-radius:9px; padding:0 8px; font:inherit; font-size:.85rem; font-weight:700; }
+    .toolbar [hidden], .toast[hidden] { display:none; }
+    .toast { position:fixed; left:50%; bottom:calc(18px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); z-index:30; display:flex; align-items:center; gap:12px; max-width:calc(100% - 32px); padding:8px 10px 8px 18px; background:var(--navy); color:#fff; border:2px solid var(--gold); border-radius:999px; font-size:.9rem; font-weight:700; box-shadow:0 6px 20px rgb(0 0 0/30%); }
+    .toast span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .toast button { flex:none; border:0; border-radius:999px; padding:6px 12px; background:var(--gold); color:var(--navy); font:inherit; font-weight:800; cursor:pointer; }
+    @media print { .toolbar, .toast { display:none !important; } }
 
     .book { display:flex; flex-direction:column; align-items:center; gap:18px; padding:20px 0 50px; }
     .slot { width:calc(1123px*var(--s)); height:calc(794px*var(--s)); }
@@ -85,8 +93,12 @@
   <input id="jump" list="names" placeholder="용어를 입력해 해당 페이지로 이동" autocomplete="off">
   <datalist id="names"></datalist>
   <button type="button" onclick="window.print()">🖨 PDF로 저장(인쇄)</button>
+  <button type="button" id="hold" title="지금 보는 페이지를 홀딩">📌 여기 홀딩</button>
+  <button type="button" id="goHold" hidden></button>
+  <select id="recent" aria-label="최근 본 페이지"><option value="">🕘 최근 본 페이지</option></select>
   <span class="count" id="count"></span>
 </div>
+<div class="toast" id="toast" hidden></div>
 <main class="book" id="book"></main>
 
 <script src="terms.js"></script>
@@ -186,6 +198,63 @@
   document.getElementById('jump').addEventListener('change', e => { const i = terms.findIndex(t => t.name === e.target.value.trim()); if (i >= 0) { document.getElementById('p-' + i).scrollIntoView({ behavior: 'smooth', block: 'start' }); e.target.value = ''; } });
   const fit = () => document.documentElement.style.setProperty('--s', Math.min(1, (document.documentElement.clientWidth - 24) / 1123).toFixed(3));
   addEventListener('resize', fit); fit();
+
+  // 홀딩 · 최근 본 페이지 · 이어보기 (브라우저 localStorage에 저장)
+  const store = (k, v) => { try { if (v === undefined) return localStorage.getItem('pb-' + k); localStorage.setItem('pb-' + k, v); } catch (e) {} return null; };
+  const slots = [...book.querySelectorAll('.slot')];
+  if (!only && slots.length) {
+    const labels = slots.map((s, n) => {
+      const m = /^p-(\d+)(-x)?$/.exec(s.id || '');
+      if (m) return terms[+m[1]].name + (m[2] ? ' (계속)' : '');
+      const h = s.querySelector('h2');
+      return h ? h.textContent.replace(/\s*\(\d+\/\d+\)/, '') : (n === 0 ? '표지' : '페이지');
+    });
+    const N = slots.length, toolbar = document.querySelector('.toolbar');
+    const goto = (n, smooth) => { const y = slots[n].getBoundingClientRect().top + scrollY - toolbar.offsetHeight - 8; scrollTo({ top: Math.max(0, y), behavior: smooth ? 'smooth' : 'auto' }); };
+    const currentSlot = () => {
+      const probe = scrollY + toolbar.offsetHeight + 8, r0 = slots[0].getBoundingClientRect(), top0 = r0.top + scrollY;
+      const step = r0.height + 18; return Math.min(N - 1, Math.max(0, Math.floor((probe - top0 + step * 0.35) / step)));
+    };
+    const valid = x => Number.isInteger(x) && x >= 0 && x < N;
+    let recent = []; try { recent = JSON.parse(store('recent') || '[]').filter(valid); } catch (e) {}
+    let hold = parseInt(store('hold'), 10); if (!valid(hold)) hold = -1;
+    const holdBtn = document.getElementById('hold'), goHold = document.getElementById('goHold'), recSel = document.getElementById('recent'), toast = document.getElementById('toast');
+    let cur = 0, toastTimer;
+    const render = () => {
+      holdBtn.textContent = hold === cur ? '📌 홀딩됨' : '📌 여기 홀딩';
+      holdBtn.classList.toggle('held', hold === cur);
+      goHold.hidden = hold < 0;
+      if (hold >= 0) goHold.textContent = '📌 p.' + (hold + 1) + ' ' + labels[hold] + ' 으로';
+      recSel.innerHTML = '<option value="">🕘 최근 본 페이지</option>' + recent.filter(n => n !== cur).slice(0, 6).map(n => `<option value="${n}">p.${n + 1} ${esc(labels[n])}</option>`).join('');
+    };
+    holdBtn.onclick = () => { hold = hold === cur ? -1 : cur; store('hold', String(hold)); render(); };
+    goHold.onclick = () => goto(hold, true);
+    recSel.onchange = () => { if (recSel.value !== '') goto(+recSel.value, true); recSel.value = ''; };
+    const showToast = n => {
+      toast.innerHTML = `<span>이어보기 · p.${n + 1} ${esc(labels[n])} 부터 보여드려요</span>`;
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = '처음부터';
+      b.onclick = () => { toast.hidden = true; goto(0, false); }; toast.append(b); toast.hidden = false;
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => { toast.hidden = true; }, 9000);
+    };
+    let tick = false, settle;
+    addEventListener('scroll', () => {
+      if (tick) return; tick = true;
+      requestAnimationFrame(() => {
+        tick = false; const n = currentSlot();
+        if (n !== cur) { cur = n; render(); }
+        clearTimeout(settle);
+        settle = setTimeout(() => {
+          store('last', String(cur));
+          recent = [cur, ...recent.filter(x => x !== cur)].slice(0, 7); store('recent', JSON.stringify(recent)); render();
+        }, 700);
+      });
+    }, { passive: true });
+    // 주소에 #가 없을 때만 마지막으로 본 페이지로 이동
+    const last = parseInt(store('last'), 10);
+    try { history.scrollRestoration = 'manual'; } catch (e) {}
+    if (!location.hash && valid(last) && last > 0) { cur = last; goto(last, false); showToast(last); }
+    render();
+  }
 })();
 </script>
 </body>
